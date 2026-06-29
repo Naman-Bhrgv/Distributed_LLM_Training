@@ -1,4 +1,4 @@
-pytorch_ddp.py ->
+ddp-pytorch.ipynb ->
 minimal end-to-end PyTorch Distributed Data Parallel (DDP) training pipeline
 
 Process -
