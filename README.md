@@ -57,3 +57,21 @@ Rank 0 saves checkpoint <br>
     │
     ▼
 Destroy process group <br>
+
+
+DeepSpeed-
+
+Both GPUs: forward pass (model_engine(x))
+    ↓
+Both GPUs: compute local loss and gradients (model_engine.backward(loss))
+    ↓
+ReduceScatter: sum gradients across GPUs, then split
+    GPU 0 keeps: gradient shard for its params
+    GPU 1 keeps: gradient shard for its params
+    ↓
+Both GPUs: clip + optimizer step on their own shard (model_engine.step())
+    ↓
+AllGather: share updated params so everyone has full model
+    ↓
+Next forward pass — both GPUs have identical weights, ready to go
+
