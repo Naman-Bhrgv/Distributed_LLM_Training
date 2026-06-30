@@ -62,18 +62,18 @@ Destroy process group <br>
 DeepSpeed-
 
 Both GPUs: forward pass (model_engine(x)) <br>
-    ↓
+    ↓ <br>
 Both GPUs: compute local loss and gradients (model_engine.backward(loss)) <br>
-    ↓
+    ↓ <br>
 ReduceScatter: sum gradients across GPUs, then split <br>
     GPU 0 keeps: gradient shard for its params <br>
     GPU 1 keeps: gradient shard for its params <br>
-    ↓
+    ↓ <br>
 Both GPUs: clip + optimizer step on their own shard (model_engine.step()) <br>
-    ↓
+    ↓ <br>
 AllGather: share updated params so everyone has full model <br>
-    ↓
+    ↓ <br>
 Next forward pass — both GPUs have identical weights, ready to go <br>
-
+<br>
 very call to model_engine.backward() and model_engine.step() now automatically uses ZeRO's sharded communication instead of standard AllReduce.
 
